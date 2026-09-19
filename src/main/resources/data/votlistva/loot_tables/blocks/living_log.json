@@ -1,0 +1,69 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 1.0,
+      "entries": [
+        {
+          "type": "minecraft:alternatives",
+          "children": [
+            {
+              "type": "minecraft:item",
+              "name": "minecraft:spruce_log",
+              "conditions": [{"condition": "minecraft:block_state_property", "block": "votlistva:living_log", "properties": {"log_type": "spruce"}}]
+            },
+            {
+              "type": "minecraft:item",
+              "name": "minecraft:birch_log",
+              "conditions": [{"condition": "minecraft:block_state_property", "block": "votlistva:living_log", "properties": {"log_type": "birch"}}]
+            },
+            {
+              "type": "minecraft:item",
+              "name": "minecraft:jungle_log",
+              "conditions": [{"condition": "minecraft:block_state_property", "block": "votlistva:living_log", "properties": {"log_type": "jungle"}}]
+            },
+            {
+              "type": "minecraft:item",
+              "name": "minecraft:acacia_log",
+              "conditions": [{"condition": "minecraft:block_state_property", "block": "votlistva:living_log", "properties": {"log_type": "acacia"}}]
+            },
+            {
+              "type": "minecraft:item",
+              "name": "minecraft:dark_oak_log",
+              "conditions": [{"condition": "minecraft:block_state_property", "block": "votlistva:living_log", "properties": {"log_type": "dark_oak"}}]
+            },
+            {
+              "type": "minecraft:item",
+              "name": "minecraft:mangrove_log",
+              "conditions": [{"condition": "minecraft:block_state_property", "block": "votlistva:living_log", "properties": {"log_type": "mangrove"}}]
+            },
+            {
+              "type": "minecraft:item",
+              "name": "minecraft:cherry_log",
+              "conditions": [{"condition": "minecraft:block_state_property", "block": "votlistva:living_log", "properties": {"log_type": "cherry"}}]
+            },
+            {
+              "type": "minecraft:item",
+              "name": "minecraft:crimson_stem",
+              "conditions": [{"condition": "minecraft:block_state_property", "block": "votlistva:living_log", "properties": {"log_type": "crimson"}}]
+            },
+            {
+              "type": "minecraft:item",
+              "name": "minecraft:warped_stem",
+              "conditions": [{"condition": "minecraft:block_state_property", "block": "votlistva:living_log", "properties": {"log_type": "warped"}}]
+            },
+            {
+              "type": "minecraft:item",
+              "name": "minecraft:oak_log"
+            }
+          ]
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ]
+    }
+  ]
+}

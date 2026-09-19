@@ -1,0 +1,15 @@
+{
+  "multipart": [
+    {"when": {"leaf_type": "oak"}, "apply": {"model": "votlistva:block/living_leaf_oak"}},
+    {"when": {"leaf_type": "spruce"}, "apply": {"model": "votlistva:block/living_leaf_spruce"}},
+    {"when": {"leaf_type": "birch"}, "apply": {"model": "votlistva:block/living_leaf_birch"}},
+    {"when": {"leaf_type": "jungle"}, "apply": {"model": "votlistva:block/living_leaf_jungle"}},
+    {"when": {"leaf_type": "acacia"}, "apply": {"model": "votlistva:block/living_leaf_acacia"}},
+    {"when": {"leaf_type": "dark_oak"}, "apply": {"model": "votlistva:block/living_leaf_dark_oak"}},
+    {"when": {"leaf_type": "mangrove"}, "apply": {"model": "votlistva:block/living_leaf_mangrove"}},
+    {"when": {"leaf_type": "cherry"}, "apply": {"model": "votlistva:block/living_leaf_cherry"}},
+    {"when": {"leaf_type": "azalea"}, "apply": {"model": "votlistva:block/living_leaf_azalea"}},
+    {"when": {"leaf_type": "flowering_azalea"}, "apply": {"model": "votlistva:block/living_leaf_flowering_azalea"}},
+    {"when": {"leaf_type": "other"}, "apply": {"model": "votlistva:block/living_leaf_other"}}
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "block.votlistva.living_leaf": "Живая листва",
+  "block.votlistva.living_log": "Живое бревно",
+  "item.votlistva.living_leaf": "Живая листва",
+  "item.votlistva.living_log": "Живое бревно",
+  "votlistva.inspect": "Гены: скорость %s | энергия %s / 2,0",
+  "votlistva.role.solar": "Солнечная листва: получает энергию от солнца",
+  "votlistva.role.predator": "Хищник: солнце вредит ему; он крадёт энергию у солнечной листвы",
+  "votlistva.role.log": "Живое бревно: плюс берёт энергию солнца, минус крадёт у соседей; при переполнении выращивает росток"
+}
