@@ -1,0 +1,158 @@
+{
+  "variants": {
+    "axis=y,log_type=oak": {
+      "model": "votlistva:block/living_log_oak"
+    },
+    "axis=x,log_type=oak": {
+      "model": "votlistva:block/living_log_oak",
+      "x": 90,
+      "uvlock": true
+    },
+    "axis=z,log_type=oak": {
+      "model": "votlistva:block/living_log_oak",
+      "x": 90,
+      "y": 90,
+      "uvlock": true
+    },
+    "axis=y,log_type=spruce": {
+      "model": "votlistva:block/living_log_spruce"
+    },
+    "axis=x,log_type=spruce": {
+      "model": "votlistva:block/living_log_spruce",
+      "x": 90,
+      "uvlock": true
+    },
+    "axis=z,log_type=spruce": {
+      "model": "votlistva:block/living_log_spruce",
+      "x": 90,
+      "y": 90,
+      "uvlock": true
+    },
+    "axis=y,log_type=birch": {
+      "model": "votlistva:block/living_log_birch"
+    },
+    "axis=x,log_type=birch": {
+      "model": "votlistva:block/living_log_birch",
+      "x": 90,
+      "uvlock": true
+    },
+    "axis=z,log_type=birch": {
+      "model": "votlistva:block/living_log_birch",
+      "x": 90,
+      "y": 90,
+      "uvlock": true
+    },
+    "axis=y,log_type=jungle": {
+      "model": "votlistva:block/living_log_jungle"
+    },
+    "axis=x,log_type=jungle": {
+      "model": "votlistva:block/living_log_jungle",
+      "x": 90,
+      "uvlock": true
+    },
+    "axis=z,log_type=jungle": {
+      "model": "votlistva:block/living_log_jungle",
+      "x": 90,
+      "y": 90,
+      "uvlock": true
+    },
+    "axis=y,log_type=acacia": {
+      "model": "votlistva:block/living_log_acacia"
+    },
+    "axis=x,log_type=acacia": {
+      "model": "votlistva:block/living_log_acacia",
+      "x": 90,
+      "uvlock": true
+    },
+    "axis=z,log_type=acacia": {
+      "model": "votlistva:block/living_log_acacia",
+      "x": 90,
+      "y": 90,
+      "uvlock": true
+    },
+    "axis=y,log_type=dark_oak": {
+      "model": "votlistva:block/living_log_dark_oak"
+    },
+    "axis=x,log_type=dark_oak": {
+      "model": "votlistva:block/living_log_dark_oak",
+      "x": 90,
+      "uvlock": true
+    },
+    "axis=z,log_type=dark_oak": {
+      "model": "votlistva:block/living_log_dark_oak",
+      "x": 90,
+      "y": 90,
+      "uvlock": true
+    },
+    "axis=y,log_type=mangrove": {
+      "model": "votlistva:block/living_log_mangrove"
+    },
+    "axis=x,log_type=mangrove": {
+      "model": "votlistva:block/living_log_mangrove",
+      "x": 90,
+      "uvlock": true
+    },
+    "axis=z,log_type=mangrove": {
+      "model": "votlistva:block/living_log_mangrove",
+      "x": 90,
+      "y": 90,
+      "uvlock": true
+    },
+    "axis=y,log_type=cherry": {
+      "model": "votlistva:block/living_log_cherry"
+    },
+    "axis=x,log_type=cherry": {
+      "model": "votlistva:block/living_log_cherry",
+      "x": 90,
+      "uvlock": true
+    },
+    "axis=z,log_type=cherry": {
+      "model": "votlistva:block/living_log_cherry",
+      "x": 90,
+      "y": 90,
+      "uvlock": true
+    },
+    "axis=y,log_type=crimson": {
+      "model": "votlistva:block/living_log_crimson"
+    },
+    "axis=x,log_type=crimson": {
+      "model": "votlistva:block/living_log_crimson",
+      "x": 90,
+      "uvlock": true
+    },
+    "axis=z,log_type=crimson": {
+      "model": "votlistva:block/living_log_crimson",
+      "x": 90,
+      "y": 90,
+      "uvlock": true
+    },
+    "axis=y,log_type=warped": {
+      "model": "votlistva:block/living_log_warped"
+    },
+    "axis=x,log_type=warped": {
+      "model": "votlistva:block/living_log_warped",
+      "x": 90,
+      "uvlock": true
+    },
+    "axis=z,log_type=warped": {
+      "model": "votlistva:block/living_log_warped",
+      "x": 90,
+      "y": 90,
+      "uvlock": true
+    },
+    "axis=y,log_type=other": {
+      "model": "votlistva:block/living_log_other"
+    },
+    "axis=x,log_type=other": {
+      "model": "votlistva:block/living_log_other",
+      "x": 90,
+      "uvlock": true
+    },
+    "axis=z,log_type=other": {
+      "model": "votlistva:block/living_log_other",
+      "x": 90,
+      "y": 90,
+      "uvlock": true
+    }
+  }
+}
