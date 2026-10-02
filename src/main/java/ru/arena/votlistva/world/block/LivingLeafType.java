@@ -1,5 +1,7 @@
 package ru.arena.votlistva.world.block;
 
+import javax.annotation.Nullable;
+
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -33,12 +35,30 @@ public enum LivingLeafType implements StringRepresentable {
         return serializedName;
     }
 
+    /** The vanilla leaf block this species is copied from. */
+    public Block sourceBlock() {
+        return vanillaBlock;
+    }
+
+    /**
+     * @return the species of {@code block}, or {@code null} when {@code block}
+     *         is not one of the vanilla leaf blocks this mod takes over.
+     */
+    @Nullable
     public static LivingLeafType fromVanillaBlock(Block block) {
         for (LivingLeafType type : values()) {
             if (type != OTHER && type.vanillaBlock == block) {
                 return type;
             }
         }
-        return OTHER;
+        return null;
+    }
+
+    /**
+     * {@code true} only for the vanilla leaf blocks the mod converts. Leaves
+     * added by other mods keep their own block and are left alone.
+     */
+    public static boolean isVanillaLeaf(Block block) {
+        return fromVanillaBlock(block) != null;
     }
 }

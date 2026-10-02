@@ -36,11 +36,22 @@ public enum LivingLogType implements StringRepresentable {
         return serializedName;
     }
 
+    /** The vanilla log/stem block this species is copied from. */
+    public Block sourceBlock() {
+        return vanillaBlock;
+    }
+
     @Nullable
     public Block sapling() {
         return sapling;
     }
 
+    /**
+     * @return the species of {@code block}, or {@code null} when {@code block}
+     *         is not one of the vanilla log/stem blocks this mod takes over.
+     *         Wood, bark, hyphae and roots are deliberately not converted.
+     */
+    @Nullable
     public static LivingLogType fromVanillaBlock(Block block) {
         if (block == Blocks.OAK_LOG || block == Blocks.STRIPPED_OAK_LOG) {
             return OAK;
@@ -72,6 +83,13 @@ public enum LivingLogType implements StringRepresentable {
         if (block == Blocks.WARPED_STEM || block == Blocks.STRIPPED_WARPED_STEM) {
             return WARPED;
         }
-        return OTHER;
+        return null;
+    }
+
+    /**
+     * {@code true} only for the vanilla log/stem blocks the mod converts.
+     */
+    public static boolean isVanillaLog(Block block) {
+        return fromVanillaBlock(block) != null;
     }
 }

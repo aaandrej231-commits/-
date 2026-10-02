@@ -174,7 +174,14 @@ public class LivingLeafBlockEntity extends BlockEntity {
         float childEnergy = energy * 0.5F;
         float childSpeed = mutatedSpeed(speed, random);
 
-        if (!level.setBlock(childPos, getBlockState(), 3)) {
+        // The child is placed into an empty block, so a waterlogged parent must
+        // not hand its "wet" state over to a position that holds no water.
+        BlockState childState = getBlockState();
+        if (childState.hasProperty(BlockStateProperties.WATERLOGGED)) {
+            childState = childState.setValue(BlockStateProperties.WATERLOGGED, false);
+        }
+
+        if (!level.setBlock(childPos, childState, 3)) {
             burn(level, pos);
             return;
         }

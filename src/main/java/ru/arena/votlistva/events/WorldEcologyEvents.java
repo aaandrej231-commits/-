@@ -2,15 +2,16 @@ package ru.arena.votlistva.events;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.WeakHashMap;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.chunk.LevelChunk;
@@ -32,17 +33,51 @@ import ru.arena.votlistva.world.blockentity.LivingLogBlockEntity;
 /**
  * Brings naturally generated vanilla trees into the ecology. Vanilla leaves
  * and logs are static blocks, so they are converted as soon as their chunk is
- * loaded and rescanned once per second to catch newly grown trees.
+ * loaded and rescanned on a round-robin pass to catch newly grown trees.
+ *
+ * <p>Only the vanilla blocks listed by {@link LivingLeafType} and
+ * {@link LivingLogType} are converted. Leaves and logs added by other mods keep
+ * their own block, loot table and behaviour.</p>
  */
 @Mod.EventBusSubscriber(modid = VotListva.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class WorldEcologyEvents {
     private static final long RESCAN_INTERVAL_TICKS = 20L;
 
-    /** Only loaded chunks are retained; the weak level key prevents server leaks. */
-    private static final Map<ServerLevel, Set<LevelChunk>> LOADED_CHUNKS =
+    /**
+     * How many chunks are rescanned per interval. Rescanning every loaded chunk
+     * of a large world every second is far too expensive, so the pass is spread
+     * over several intervals instead. A full pass therefore takes
+     * {@code loadedChunks / MAX_CHUNKS_PER_RESCAN} seconds.
+     */
+    private static final int MAX_CHUNKS_PER_RESCAN = 32;
+
+    /** The vanilla leaf and log/stem blocks the mod is allowed to take over. */
+    private static final Set<Block> VANILLA_ECOLOGY_BLOCKS = collectVanillaEcologyBlocks();
+
+    /**
+     * Loaded chunks of every live level. The set is insertion ordered, which
+     * turns the periodic rescan into a round-robin, and the weak level key
+     * prevents leaking unloaded levels.
+     */
+    private static final Map<ServerLevel, LinkedHashSet<LevelChunk>> LOADED_CHUNKS =
             new WeakHashMap<>();
 
     private WorldEcologyEvents() {
+    }
+
+    private static Set<Block> collectVanillaEcologyBlocks() {
+        Set<Block> blocks = new HashSet<>();
+        for (LivingLeafType type : LivingLeafType.values()) {
+            if (type != LivingLeafType.OTHER) {
+                blocks.add(type.sourceBlock());
+            }
+        }
+        for (LivingLogType type : LivingLogType.values()) {
+            if (type != LivingLogType.OTHER) {
+                blocks.add(type.sourceBlock());
+            }
+        }
+        return Set.copyOf(blocks);
     }
 
     @SubscribeEvent
@@ -52,7 +87,7 @@ public final class WorldEcologyEvents {
             return;
         }
 
-        LOADED_CHUNKS.computeIfAbsent(level, ignored -> new HashSet<>()).add(chunk);
+        LOADED_CHUNKS.computeIfAbsent(level, ignored -> new LinkedHashSet<>()).add(chunk);
         scanChunk(level, chunk);
     }
 
@@ -63,7 +98,7 @@ public final class WorldEcologyEvents {
             return;
         }
 
-        Set<LevelChunk> chunks = LOADED_CHUNKS.get(level);
+        LinkedHashSet<LevelChunk> chunks = LOADED_CHUNKS.get(level);
         if (chunks != null) {
             chunks.remove(chunk);
             if (chunks.isEmpty()) {
@@ -80,14 +115,22 @@ public final class WorldEcologyEvents {
             return;
         }
 
-        Set<LevelChunk> chunks = LOADED_CHUNKS.get(level);
+        LinkedHashSet<LevelChunk> chunks = LOADED_CHUNKS.get(level);
         if (chunks == null || chunks.isEmpty()) {
             return;
         }
 
-        // Copy because a scan can cause a chunk to unload or load later in the
-        // same server tick without invalidating this iteration.
-        for (LevelChunk chunk : new ArrayList<>(chunks)) {
+        // Detach the next batch before scanning: a scan can load neighbour
+        // chunks, which would otherwise invalidate the iterator below.
+        List<LevelChunk> batch = new ArrayList<>(MAX_CHUNKS_PER_RESCAN);
+        Iterator<LevelChunk> iterator = chunks.iterator();
+        for (int i = 0; i < MAX_CHUNKS_PER_RESCAN && iterator.hasNext(); i++) {
+            batch.add(iterator.next());
+            iterator.remove();
+        }
+
+        for (LevelChunk chunk : batch) {
+            chunks.add(chunk); // back of the rotation: round-robin over the level
             scanChunk(level, chunk);
         }
     }
@@ -131,17 +174,16 @@ public final class WorldEcologyEvents {
     }
 
     private static boolean isVanillaEcologyBlock(BlockState state) {
-        Block block = state.getBlock();
-        return (block instanceof LeavesBlock && !(block instanceof LivingLeafBlock))
-                || (state.is(BlockTags.LOGS) && !(block instanceof LivingLogBlock));
+        return VANILLA_ECOLOGY_BLOCKS.contains(state.getBlock());
     }
 
     private static void convert(ServerLevel level, BlockPos pos, BlockState source) {
         Block sourceBlock = source.getBlock();
-        if (sourceBlock instanceof LeavesBlock && !(sourceBlock instanceof LivingLeafBlock)) {
-            LivingLeafType type = LivingLeafType.fromVanillaBlock(sourceBlock);
+
+        LivingLeafType leafType = LivingLeafType.fromVanillaBlock(sourceBlock);
+        if (leafType != null) {
             BlockState target = ModBlocks.LIVING_LEAF.get().defaultBlockState()
-                    .setValue(LivingLeafBlock.LEAF_TYPE, type);
+                    .setValue(LivingLeafBlock.LEAF_TYPE, leafType);
             target = copyLeafProperties(source, target);
 
             if (level.setBlock(pos, target, 3)
@@ -151,10 +193,10 @@ public final class WorldEcologyEvents {
             return;
         }
 
-        if (source.is(BlockTags.LOGS) && !(sourceBlock instanceof LivingLogBlock)) {
-            LivingLogType type = LivingLogType.fromVanillaBlock(sourceBlock);
+        LivingLogType logType = LivingLogType.fromVanillaBlock(sourceBlock);
+        if (logType != null) {
             BlockState target = ModBlocks.LIVING_LOG.get().defaultBlockState()
-                    .setValue(LivingLogBlock.LOG_TYPE, type);
+                    .setValue(LivingLogBlock.LOG_TYPE, logType);
             if (source.hasProperty(BlockStateProperties.AXIS)
                     && target.hasProperty(BlockStateProperties.AXIS)) {
                 target = target.setValue(BlockStateProperties.AXIS,

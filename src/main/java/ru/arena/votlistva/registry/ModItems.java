@@ -34,8 +34,9 @@ public final class ModItems {
 
     private static void addCreative(BuildCreativeModeTabContentsEvent event) {
         if (event.getTabKey().equals(CreativeModeTabs.NATURAL_BLOCKS)) {
-            event.accept(LIVING_LEAF);
-            event.accept(LIVING_LOG);
+            // RegistryObject is a supplier, not an ItemLike: resolve it here.
+            event.accept(LIVING_LEAF.get());
+            event.accept(LIVING_LOG.get());
         }
     }
 }

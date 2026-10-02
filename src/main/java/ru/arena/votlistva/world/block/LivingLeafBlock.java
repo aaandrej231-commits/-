@@ -20,6 +20,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import ru.arena.votlistva.world.blockentity.LivingLeafBlockEntity;
@@ -31,7 +32,11 @@ public class LivingLeafBlock extends LeavesBlock implements EntityBlock {
 
     public LivingLeafBlock(BlockBehaviour.Properties properties) {
         super(properties);
-        registerDefaultState(this.stateDefinition.any().setValue(LEAF_TYPE, LivingLeafType.OAK));
+        // Vanilla LeavesBlock starts at distance 7; keep the same default so a
+        // freshly placed block is not treated as if it were glued to a log.
+        registerDefaultState(this.stateDefinition.any()
+                .setValue(BlockStateProperties.DISTANCE, 7)
+                .setValue(LEAF_TYPE, LivingLeafType.OAK));
     }
 
     @Override
