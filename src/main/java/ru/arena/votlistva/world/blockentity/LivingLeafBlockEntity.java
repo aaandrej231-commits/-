@@ -14,6 +14,7 @@ import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import ru.arena.votlistva.registry.ModBlockEntities;
 
 /**
@@ -116,9 +117,19 @@ public class LivingLeafBlockEntity extends BlockEntity {
      * Returns the current sky/sun intensity in the range 0..1. A roof blocks
      * sunlight completely; night and weather lower the value through
      * Minecraft's sky-darkness value.
+     *
+     * <p>The sky light value at this exact position is the only occlusion test
+     * used here. {@code canSeeSky} must NOT be used as a gate: it is a default
+     * method of {@code BlockAndTintGetter} that requires the sky light to be at
+     * the maximum (15), not merely non-zero. Leaves are light-filtering blocks
+     * that reduce sky light by 1 per block of thickness, so every leaf with at
+     * least one leaf above it in its column reads 14 and would report
+     * {@code canSeeSky == false}. Gating on it returned sunlight 0 for the whole
+     * inside of a canopy: those leaves gained nothing and only paid the
+     * metabolic cost, so they died instead of gaining energy.</p>
      */
     protected static float sunlight(Level level, BlockPos pos) {
-        if (!level.dimensionType().hasSkyLight() || !level.canSeeSky(pos)) {
+        if (!level.dimensionType().hasSkyLight()) {
             return 0.0F;
         }
 
