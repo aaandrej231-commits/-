@@ -1,0 +1,10 @@
+{
+  "block.votlistva.living_leaf": "Living Leaf",
+  "block.votlistva.living_log": "Living Log",
+  "item.votlistva.living_leaf": "Living Leaf",
+  "item.votlistva.living_log": "Living Log",
+  "votlistva.inspect": "Genes: speed %s | energy %s / 2.0",
+  "votlistva.role.solar": "Solar leaf: receives energy from sunlight",
+  "votlistva.role.predator": "Predator: sunlight hurts it; it steals from solar leaves",
+  "votlistva.role.log": "Living log: positive speed takes sunlight, negative speed steals from neighbours; it grows a sapling"
+}
